@@ -10,32 +10,25 @@ var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
 
 
+// API controllers 
+var 
+  authentication  = require('../controllers/authentication'),
+  posts           = require('../controllers/posts');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-/* GET posts */
-router.get('/posts', function(req, res, next) {
-  Post.find(function(err, posts){
-    if(err){ return next(err); }
+module.exports = router;
 
-    res.json(posts);
-  });
-});
+// ----------------------------------------- POSTS  -------------------------------------------------//
+
+/* GET posts */
+router.get('/posts', posts.getPosts );
 
 /*POST posts*/
-router.post('/posts', auth, function(req, res, next) {
-  var post = new Post(req.body);
-  post.author = req.payload.username;
-
-  post.save(function(err, post){
-    if(err){ return next(err); }
-
-    res.json(post);
-  });
-});
+router.post('/posts', auth, posts.createPost );
 
 /*Load Post by ID*/
 router.param('post', function(req, res, next, id) {
@@ -108,41 +101,11 @@ router.param('comment', function(req, res, next, id) {
   });
 });
 
+// ----------------------------------------- AUTHENTICATION  -------------------------------------------------//
 /*User Register*/
-router.post('/register', function(req, res, next){
-  if(!req.body.username || !req.body.password){
-    return res.status(400).json({message: 'Please fill out all fields'});
-  }
-
-  var user = new User();
-
-  user.username = req.body.username;
-
-  user.setPassword(req.body.password)
-
-  user.save(function (err){
-    if(err){ return next(err); }
-
-    return res.json({token: user.generateJWT()})
-  });
-});
-
+router.post('/register', authentication.processRegistration );
 /*User Login*/
-router.post('/login', function(req, res, next){
-  if(!req.body.username || !req.body.password){
-    return res.status(400).json({message: 'Please fill out all fields'});
-  }
-
-  passport.authenticate('local', function(err, user, info){
-    if(err){ return next(err); }
-
-    if(user){
-      return res.json({token: user.generateJWT()});
-    } else {
-      return res.status(401).json(info);
-    }
-  })(req, res, next);
-});
+router.post('/login', authentication.processLogin );
 
 
 module.exports = router;
