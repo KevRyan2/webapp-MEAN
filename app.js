@@ -12,12 +12,19 @@ var express         = require('express'),
 require('./server/models/Posts');
 require('./server/models/Comments');
 require('./server/models/Users');
+
+//CONFIG
 require('./server/config/passport');
 
 mongoose.connect('mongodb://localhost/news');
 
 var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
+
+// API CONTROLLERS 
+require('./server/controllers/authentication');
+require('./server/controllers/posts');
+
 
 var app = express();
 
@@ -34,7 +41,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'client')));
+
+app.use('/user', express.static(path.join(__dirname, 'client/app-user')));
+app.use('/contributor', express.static(path.join(__dirname, 'client/app-contributor')));
+app.use('/admin', express.static(path.join(__dirname, 'client/app-admin')));
+app.use('/set', express.static(path.join(__dirname, 'client/app-set')));
+app.use('/', express.static(path.join(__dirname, 'client')));
+// app.use(express.static(path.join(__dirname, 'client')));
 app.use(passport.initialize());
 
 app.use('/', routes);
