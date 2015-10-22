@@ -1,21 +1,23 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var express         = require('express'),
+    path            = require('path'),
+    favicon         = require('serve-favicon'),
+    logger          = require('morgan'),
+    ejs             = require('ejs'),
+    cookieParser    = require('cookie-parser'),
+    bodyParser      = require('body-parser'),
+    mongoose        = require('mongoose'),
+    passport        = require('passport');
 
-var mongoose = require('mongoose');
-var passport = require('passport');
-require('./models/Posts');
-require('./models/Comments');
-require('./models/Users');
-require('./config/passport');
+//MODELS
+require('./server/models/Posts');
+require('./server/models/Comments');
+require('./server/models/Users');
+require('./server/config/passport');
 
 mongoose.connect('mongodb://localhost/news');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./server/routes/index');
+var users = require('./server/routes/users');
 
 var app = express();
 
@@ -23,7 +25,8 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+app.engine('html',require('ejs').renderFile);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
