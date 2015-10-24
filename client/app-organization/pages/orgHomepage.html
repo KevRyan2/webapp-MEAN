@@ -1,0 +1,44 @@
+<div class="page-header">
+      <h1>SV Impact - Organization</h1>
+    </div>
+
+    <div ng-repeat="project in projects | orderBy:'-upvotes'">
+      <span class="glyphicon glyphicon-thumbs-up"
+          ng-click="incrementUpvotes(project)"></span>
+        {{project.upvotes}}
+
+        <span style="font-size:20px; margin-left:10px;">
+          <a ng-show="project.link" href="{{project.link}}">
+            {{project.title}}
+          </a>
+        <span ng-hide="project.link">
+            {{project.title}}
+        </span>
+      </span>
+      <span>
+        <a href="#/projects/{{project._id}}">Comments</a>
+      </span>
+    </div>
+
+      <form ng-submit="addProject()"
+        ng-show="isLoggedIn()"
+        style="margin-top:30px;">
+        <h3>Add a new project</h3>
+        <div ng-hide="isLoggedIn()">
+          <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can add a project.</h3>
+        </div>
+
+        <div class="form-group">
+          <input type="text"
+            class="form-control"
+            placeholder="Title"
+            ng-model="title"></input>
+        </div>
+        <div class="form-group">
+          <input type="text"
+          class="form-control"
+          placeholder="Link"
+          ng-model="link"></input>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Project</button>
+      </form>
