@@ -9,7 +9,7 @@ var express         = require('express'),
     passport        = require('passport');
 
 //MODELS
-require('./server/models/Posts');
+require('./server/models/Projects');
 require('./server/models/Comments');
 require('./server/models/Users');
 
@@ -23,7 +23,7 @@ var users = require('./server/routes/users');
 
 // API CONTROLLERS 
 require('./server/controllers/authentication');
-require('./server/controllers/posts');
+require('./server/controllers/projects');
 
 
 var app = express();
@@ -36,7 +36,7 @@ var app = express();
 // app.engine('html',require('ejs').renderFile);
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/client/assets/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

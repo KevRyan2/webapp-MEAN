@@ -11,24 +11,24 @@ function($stateProvider, $urlRouterProvider) {
       templateUrl: '/pages/homepage.html',
       controller: 'MainCtrl',
       resolve: {
-        postPromise: ['posts', function(posts){
-          return posts.getAll();
+        projectPromise: ['projects', function(projects){
+          return projects.getAll();
         }]
       }
     })
-    .state('posts', {
-	  url: '/posts/{id}',
-	  templateUrl: '/posts.html',
-	  controller: 'PostsCtrl',
+    .state('projects', {
+	  url: '/projects/{id}',
+	  templateUrl: '/pages/project.html',
+	  controller: 'ProjectsCtrl',
     resolve: {
-      post: ['$stateParams', 'posts', function($stateParams, posts) {
-        return posts.get($stateParams.id);
+      project: ['$stateParams', 'projects', function($stateParams, projects) {
+        return projects.get($stateParams.id);
       }]
     }
 	  })
     .state('login', {
       url: '/login',
-      templateUrl: '/login.html',
+      templateUrl: '/pages/login.html',
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){
@@ -38,7 +38,7 @@ function($stateProvider, $urlRouterProvider) {
     })
     .state('register', {
       url: '/register',
-      templateUrl: '/register.html',
+      templateUrl: '/pages/register.html',
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){

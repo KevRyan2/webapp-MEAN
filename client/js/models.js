@@ -44,41 +44,41 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   return auth;
 }])
 
-app.factory('posts', ['$http', 'auth', function($http, auth){
+app.factory('projects', ['$http', 'auth', function($http, auth){
   var o = {
-    posts: []
+    projects: []
   };
   o.getAll = function() {
-    return $http.get('/api/posts').success(function(data){
-      angular.copy(data, o.posts);
+    return $http.get('/api/projects').success(function(data){
+      angular.copy(data, o.projects);
     });
   };
-  o.create = function(post) {
-    return $http.post('/api/posts', post, {
+  o.create = function(project) {
+    return $http.post('/api/projects', project, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
-      o.posts.push(data);
+      o.projects.push(data);
     });
   };
-  o.upvote = function(post) {
-    return $http.put('/api/posts/' + post._id + '/upvote', null, {
+  o.upvote = function(project) {
+    return $http.put('/api/projects/' + project._id + '/upvote', null, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
-      post.upvotes += 1;
+      project.upvotes += 1;
     });
   };
   o.get = function(id) {
-    return $http.get('/api/posts/' + id).then(function(res){
+    return $http.get('/api/projects/' + id).then(function(res){
       return res.data;
     });
   };
   o.addComment = function(id, comment) {
-    return $http.post('/api/posts/' + id + '/comments', comment, {
+    return $http.post('/api/projects/' + id + '/comments', comment, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     });
   };
-  o.upvoteComment = function(post, comment) {
-    return $http.put('/api/posts/' + post._id + '/comments/'+ comment._id + '/upvote', null, {
+  o.upvoteComment = function(project, comment) {
+    return $http.put('/api/projects/' + project._id + '/comments/'+ comment._id + '/upvote', null, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
       comment.upvotes += 1;

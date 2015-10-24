@@ -2,45 +2,45 @@
 
 app.controller('MainCtrl', [
 '$scope',
-'posts',
+'projects',
 'auth',
-function($scope, posts, auth){
-  $scope.posts = posts.posts;
+function($scope, projects, auth){
+  $scope.projects = projects.projects;
   $scope.isLoggedIn = auth.isLoggedIn;
-  $scope.addPost = function(){
+  $scope.addProject = function(){
     if(!$scope.title || $scope.title === '') { return; }
-    posts.create({
+    projects.create({
       title: $scope.title,
       link: $scope.link,
     });
     $scope.title = '';
     $scope.link = '';
   };
-  $scope.incrementUpvotes = function(post) {
-    posts.upvote(post);
+  $scope.incrementUpvotes = function(project) {
+    projects.upvote(project);
   };
 
 }]);
-app.controller('PostsCtrl', [
+app.controller('ProjectsCtrl', [
 '$scope',
-'posts',
-'post',
+'projects',
+'project',
 'auth',
-function($scope, posts, post, auth){
-  $scope.post = post;
+function($scope, projects, project, auth){
+  $scope.project = project;
   $scope.isLoggedIn = auth.isLoggedIn;
   $scope.addComment = function(){
     if($scope.body === '') { return; }
-    posts.addComment(post._id, {
+    projects.addComment(project._id, {
       body: $scope.body,
       author: 'user',
     }).success(function(comment) {
-      $scope.post.comments.push(comment);
+      $scope.project.comments.push(comment);
     });
     $scope.body = '';
   };
   $scope.incrementUpvotes = function(comment) {
-    posts.upvoteComment(post, comment);
+    projects.upvoteComment(project, comment);
     comment.upvotes += 1;
   };
 }]);

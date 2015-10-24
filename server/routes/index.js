@@ -5,7 +5,7 @@ var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 var mongoose = require('mongoose');
 var passport = require('passport');
-var Post = mongoose.model('Post');
+var Project = mongoose.model('Project');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
 
@@ -13,7 +13,7 @@ var User = mongoose.model('User');
 // API controllers 
 var 
   authentication  = require('../controllers/authentication'),
-  posts           = require('../controllers/posts');
+  projects           = require('../controllers/projects');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -22,33 +22,13 @@ router.get('/', function(req, res, next) {
 
 module.exports = router;
 
-// ----------------------------------------- POSTS  -------------------------------------------------//
+// ----------------------------------------- PROJECTS  -------------------------------------------------//
 
-router.get('/posts', posts.getPosts );
-router.post('/posts', auth, posts.createPost );
+router.get('/projects', projects.getProjects );
+router.post('/projects', auth, projects.createProject );
+router.param('project', projects.projectById );
+router.get('/projects/:project', projects.getProjectById );
 
-
-/*Load Post by ID*/
-router.param('post', function (req, res, next, id) {
-  var query = Post.findById(id);
-
-  query.exec(function (err, post){
-    if (err) { return next(err); }
-    if (!post) { return next(new Error('can\'t find post')); }
-
-    req.post = post;
-    return next();
-  });
-});
-
-/*Get Post/:id*/
-router.get('/posts/:post', function(req, res, next) {
-  req.post.populate('comments', function(err, post) {
-    if (err) { return next(err); }
-
-    res.json(post);
-  });
-});
 
 
 // ----------------------------------------- AUTHENTICATION  -------------------------------------------------//
