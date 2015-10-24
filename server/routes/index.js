@@ -27,6 +27,7 @@ module.exports = router;
 router.get('/posts', posts.getPosts );
 router.post('/posts', auth, posts.createPost );
 
+
 /*Load Post by ID*/
 router.param('post', function (req, res, next, id) {
   var query = Post.findById(id);

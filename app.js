@@ -31,9 +31,9 @@ var app = express();
 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'client'));
-app.set('view engine', 'html');
-app.engine('html',require('ejs').renderFile);
+// app.set('views', path.join(__dirname, 'client'));
+// app.set('view engine', 'html');
+// app.engine('html',require('ejs').renderFile);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -50,7 +50,7 @@ app.use('/', express.static(path.join(__dirname, 'client')));
 // app.use(express.static(path.join(__dirname, 'client')));
 app.use(passport.initialize());
 
-app.use('/', routes);
+app.use('/api', routes);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
