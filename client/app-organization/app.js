@@ -9,7 +9,7 @@ function ($stateProvider, $urlRouterProvider, $locationProvider) {
   $stateProvider
     .state('orgDash', {
       url: '/',
-      templateUrl: '/orgHomepage.html',
+      templateUrl: 'pages/orgHomepage.html',
       controller: 'MainCtrl',
       resolve: {
         projectPromise: ['projects', function(projects){
