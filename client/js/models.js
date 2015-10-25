@@ -1,11 +1,11 @@
 app.factory('auth', ['$http', '$window', function($http, $window){
   var auth = {};
   auth.saveToken = function (token){
-    $window.localStorage['flapper-news-token'] = token;
+    $window.localStorage['admin-token'] = token;
   };
 
   auth.getToken = function (){
-    return $window.localStorage['flapper-news-token'];
+    return $window.localStorage['admin-token'];
   };
   auth.isLoggedIn = function(){
     var token = auth.getToken();
@@ -26,32 +26,21 @@ app.factory('auth', ['$http', '$window', function($http, $window){
       return payload.username;
     }
   };
-  // auth.register = function(user){
-  //   return $http.post('/api/register', user).success(function(data){
-  //     auth.saveToken(data.token);
-  //   });
-  // };
-  auth.registerOrg = function (user) {
-    return $http.post('/api/registerOrg', user).success(function(data) {
-      console.log('REGISTER DATA: ', data);
-      auth.saveToken(data.token);
-    }).catch(function(err) {
-      return err.data;
-    });
-  };
-  auth.registerUser = function(user){
-    return $http.post('/api/registerUser', user).success(function(data){
+
+  auth.register = function (user) {
+    return $http.post('/api/register', user).success(function(data) {
       console.log('REGISTER DATA: ', data);
       auth.saveToken(data.token);
     });
   };
+
   auth.logIn = function(user){
     return $http.post('/api/login', user).success(function(data){
       auth.saveToken(data.token);
     });
   };
   auth.logOut = function(){
-    $window.localStorage.removeItem('flapper-news-token');
+    $window.localStorage.removeItem('admin-token');
   };
   auth.getPermissions = function() {
     var token = auth.getToken();

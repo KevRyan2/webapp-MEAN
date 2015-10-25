@@ -6,7 +6,7 @@
       <span>{{ error.message }}</span>
     </div>
 
-    <form ng-submit="registerOrg()"
+    <form ng-submit="register(organization)"
       style="margin-top:30px;">
       <h3>Organization Register</h3>
 
@@ -14,13 +14,13 @@
         <input type="text"
         class="form-control"
         placeholder="Username"
-        ng-model="user.username"></input>
+        ng-model="organization.username"></input>
       </div>
       <div class="form-group">
         <input type="password"
         class="form-control"
         placeholder="Password"
-        ng-model="user.password"></input>
+        ng-model="organization.password"></input>
       </div>
       <button type="submit" class="btn btn-primary">Register</button>
     </form>

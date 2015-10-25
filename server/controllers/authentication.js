@@ -24,7 +24,7 @@ var
   User          = mongoose.model('User');
 
 //Operations
-exports.processOrgRegistration = function(req, res, next){
+exports.processRegistration = function(req, res, next){
   if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
   // } else if (req.body.username !== req.body.repeat_username) {
@@ -34,39 +34,39 @@ exports.processOrgRegistration = function(req, res, next){
   }
 
   var user = new User();
-
+  if (req.body.permissions === 'Organization') { user.permissions = 'Organization'; }
   user.username = req.body.username;
   user.setPassword(req.body.password);
   user.generateUserToken();
 
   user.save(function (err){
-    if (err) { logger.error('USER SAVE ERROR:',err); return next(err); }
+    if (err) { console.log('USER SAVE ERROR:', err); return next(err); }
 
     return res.json({token: user.generateJWT()})
   });
 };
 
-exports.processUserRegistration = function(req, res, next){
-  if(!req.body.username || !req.body.password){
-    return res.status(400).json({message: 'Please fill out all fields'});
-  // } else if (req.body.username !== req.body.repeat_username) {
-  //   return res.status(400).json({message: 'Emails do not match'});
-  // } else if (req.body.password !== req.body.repeat_password) {
-  //   return res.status(400).json({message: 'Passwords do not match'});
-  }
+// exports.processUserRegistration = function(req, res, next){
+//   if(!req.body.username || !req.body.password){
+//     return res.status(400).json({message: 'Please fill out all fields'});
+//   // } else if (req.body.username !== req.body.repeat_username) {
+//   //   return res.status(400).json({message: 'Emails do not match'});
+//   // } else if (req.body.password !== req.body.repeat_password) {
+//   //   return res.status(400).json({message: 'Passwords do not match'});
+//   }
 
-  var user = new User();
+//   var user = new User();
 
-  user.username = req.body.username;
-  user.setPassword(req.body.password);
-  user.generateUserToken();
+//   user.username = req.body.username;
+//   user.setPassword(req.body.password);
+//   user.generateUserToken();
 
-  user.save(function (err){
-    if (err) { logger.error('USER SAVE ERROR:',err); return next(err); }
+//   user.save(function (err){
+//     if (err) { logger.error('USER SAVE ERROR:',err); return next(err); }
 
-    return res.json({token: user.generateJWT()})
-  });
-};
+//     return res.json({token: user.generateJWT()})
+//   });
+// };
 
 exports.processLogin = function(req, res, next){
   if(!req.body.username || !req.body.password){
