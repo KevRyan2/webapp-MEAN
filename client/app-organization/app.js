@@ -3,12 +3,13 @@ var app = angular.module('svImpact.organization', ['ui.router']);
 app.config([
 '$stateProvider',
 '$urlRouterProvider',
-function($stateProvider, $urlRouterProvider) {
+'$locationProvider',
+function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider
     .state('orgDash', {
-      url: '/orgDash',
-      templateUrl: '/pages/orgHomepage.html',
+      url: '/',
+      templateUrl: '/orgHomepage.html',
       controller: 'MainCtrl',
       resolve: {
         projectPromise: ['projects', function(projects){
@@ -18,4 +19,5 @@ function($stateProvider, $urlRouterProvider) {
     });
 
   $urlRouterProvider.otherwise('home');
+  $locationProvider.html5Mode(true);
 }]);

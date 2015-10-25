@@ -4,7 +4,10 @@ app.controller('MainCtrl', [
 '$scope',
 'projects',
 'auth',
-function($scope, projects, auth){
+'$location', 
+'$window',
+'$rootScope',
+function ($scope, projects, auth, $location, $window, $rootScope){
   $scope.projects = projects.projects;
   $scope.isLoggedIn = auth.isLoggedIn;
   $scope.addProject = function(){
@@ -49,19 +52,35 @@ app.controller('AuthCtrl', [
 '$scope',
 '$state',
 'auth',
-function($scope, $state, auth){
+'$location', 
+'$window',
+'$rootScope',
+function ($scope, $state, auth, $location, $window, $rootScope){
   $scope.user = {};
   $scope.organization = { permissions: 'Organization' };
 
 
+  // $scope.register = function(user){
+  //   if($state.is("registerUser")){
+  //     auth.register($scope.user).then(function (data){
+  //       $state.go('home');
+  //     });
+  //   } else if ($state.is("registerOrg")) {
+  //     auth.register($scope.organization).then(function (data){
+  //       $state.go('home');
+  //     });
+  //   }
+  // };
   $scope.register = function(user){
     if($state.is("registerUser")){
       auth.register($scope.user).then(function (data){
-        $state.go('home');
+        console.log('Developer');
+        $window.location.href = '/user';
       });
     } else if ($state.is("registerOrg")) {
       auth.register($scope.organization).then(function (data){
-        $state.go('home');
+        console.log('Organization');
+        $window.location.href = '/contributor';
       });
     }
   };

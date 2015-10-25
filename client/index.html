@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="svImpact">
 <head>
+  <base href="/">
   <title>SVImpact</title>
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
   <link rel="apple-touch-icon" sizes="57x57" href="/assets/apple-icon-57x57.png">
@@ -28,7 +29,7 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
   <style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
-<body ng-app="svImpact">
+<body>
   <nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
     <ul class="nav navbar-nav">
       <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>

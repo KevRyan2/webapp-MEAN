@@ -1,4 +1,4 @@
-app.factory('auth', ['$http', '$window', function($http, $window){
+app.factory('auth', ['$http', '$window', function ($http, $window){
   var auth = {};
   auth.saveToken = function (token){
     $window.localStorage['admin-token'] = token;
