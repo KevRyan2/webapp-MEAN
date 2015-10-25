@@ -39,9 +39,12 @@ app.factory('auth', ['$http', '$window', function ($http, $window){
       auth.saveToken(data.token);
     });
   };
+  
   auth.logOut = function(){
     $window.localStorage.removeItem('admin-token');
+    $window.location = "/";
   };
+
   auth.getPermissions = function() {
     var token = auth.getToken();
     var payload = JSON.parse($window.atob(token.split('.')[1]));
@@ -55,6 +58,17 @@ app.factory('auth', ['$http', '$window', function ($http, $window){
        return (payload.permissions === 'Organization' || payload.permissions === 'Admin');
       } else {
         console.log('missing token');
+      }
+  };
+  auth.isAdmin = function(){
+      var token = auth.getToken();
+
+      if(token){
+       var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+        return payload.permissions === 'Admin';
+      } else {
+        return false;
       }
   };
     auth.header = function() {

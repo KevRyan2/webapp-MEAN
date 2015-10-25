@@ -85,20 +85,40 @@ function ($scope, $state, auth, $location, $window, $rootScope){
     }
   };
 
-
   $scope.logIn = function(){
-    auth.logIn($scope.user).error(function(error){
-      $scope.error = error;
-    }).then(function(){
-      $state.go('home');
+    auth.logIn($scope.user).then(function (data) {
+        if (!data.message) {
+          console.log('PERMISSIONS: ', auth.getPermissions());
+          if (auth.isAdmin()) {
+            console.log('ADMIN');
+            $window.location.href = '/admin';
+          } else if (auth.isOrganization()) {
+            console.log('Organization');
+            $window.location.href = '/organization';
+          } else {
+            console.log('USER');
+            $window.location.href="/user";
+          }
+        } else {
+          $scope.error = data;
+          $log.error('error', $scope.error);
+        }
     });
   };
+  // $scope.logIn = function(){
+  //   auth.logIn($scope.user).error(function(error){
+  //     $scope.error = error;
+  //   }).then(function(){
+  //     $state.go('home');
+  //   });
+  // };
 }]);
 
 app.controller('NavCtrl', [
 '$scope',
 'auth',
 function($scope, auth){
+  
   $scope.isLoggedIn = auth.isLoggedIn;
   $scope.currentUser = auth.currentUser;
   $scope.logOut = auth.logOut;
