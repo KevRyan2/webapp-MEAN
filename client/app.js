@@ -36,9 +36,19 @@ function($stateProvider, $urlRouterProvider) {
         }
       }]
     })
-    .state('register', {
-      url: '/register',
-      templateUrl: '/pages/register.html',
+    .state('registerUser', {
+      url: '/registerUser',
+      templateUrl: '/pages/registerUser.html',
+      controller: 'AuthCtrl',
+      onEnter: ['$state', 'auth', function($state, auth){
+        if(auth.isLoggedIn()){
+          $state.go('home');
+        }
+      }]
+    })
+    .state('registerOrg', {
+      url: '/registerOrg',
+      templateUrl: '/pages/registerOrg.html',
       controller: 'AuthCtrl',
       onEnter: ['$state', 'auth', function($state, auth){
         if(auth.isLoggedIn()){

@@ -50,10 +50,26 @@ app.controller('AuthCtrl', [
 '$state',
 'auth',
 function($scope, $state, auth){
-  $scope.user = {};
+  // $scope.user = {};
+  $scope.organization = { permissions: 'Organization' };
 
-  $scope.register = function(){
-    auth.register($scope.user).error(function(error){
+  // $scope.register = function(){
+  //   auth.register($scope.user).error(function(error){
+  //     $scope.error = error;
+  //   }).then(function(){
+  //     $state.go('home');
+  //   });
+  // };
+  $scope.registerUser = function(){
+    auth.register($scope.user).error(function (error){
+      $scope.error = error;
+    }).then(function(){
+      $state.go('home');
+    });
+  };
+
+  $scope.registerOrg = function() {
+    auth.register($scope.organization).error(function (error) {
       $scope.error = error;
     }).then(function(){
       $state.go('home');

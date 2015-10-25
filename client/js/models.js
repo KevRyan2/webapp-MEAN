@@ -26,8 +26,22 @@ app.factory('auth', ['$http', '$window', function($http, $window){
       return payload.username;
     }
   };
-  auth.register = function(user){
-    return $http.post('/api/register', user).success(function(data){
+  // auth.register = function(user){
+  //   return $http.post('/api/register', user).success(function(data){
+  //     auth.saveToken(data.token);
+  //   });
+  // };
+  auth.registerOrg = function (user) {
+    return $http.post('/api/registerOrg', user).success(function(data) {
+      console.log('REGISTER DATA: ', data);
+      auth.saveToken(data.token);
+    }).catch(function(err) {
+      return err.data;
+    });
+  };
+  auth.registerUser = function(user){
+    return $http.post('/api/registerUser', user).success(function(data){
+      console.log('REGISTER DATA: ', data);
       auth.saveToken(data.token);
     });
   };
@@ -38,6 +52,24 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   };
   auth.logOut = function(){
     $window.localStorage.removeItem('flapper-news-token');
+  };
+  auth.getPermissions = function() {
+    var token = auth.getToken();
+    var payload = JSON.parse($window.atob(token.split('.')[1]));
+    console.log(payload);
+    return payload.permissions;
+  };
+  auth.isOrganization = function(){
+      var token = auth.getToken();
+      if(token){
+       var payload = JSON.parse($window.atob(token.split('.')[1]));
+       return (payload.permissions === 'Organization' || payload.permissions === 'Admin');
+      } else {
+        console.log('missing token');
+      }
+  };
+    auth.header = function() {
+    return { headers: { Authorization: 'Bearer ' + auth.getToken() } };
   };
 
 

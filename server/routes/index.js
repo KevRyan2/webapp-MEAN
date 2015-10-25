@@ -33,7 +33,8 @@ router.get('/projects/:project', projects.getProjectById );
 
 // ----------------------------------------- AUTHENTICATION  -------------------------------------------------//
 
-router.post('/register', authentication.processRegistration );
+router.post('/registerUser', authentication.processUserRegistration );
+router.post('/registerOrg', authentication.processOrgRegistration );
 router.post('/login', authentication.processLogin );
 
 

@@ -24,19 +24,45 @@ var
   User          = mongoose.model('User');
 
 //Operations
-exports.processRegistration = function(req, res, next){
+exports.processOrgRegistration = function(req, res, next){
   if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
+  // } else if (req.body.username !== req.body.repeat_username) {
+  //   return res.status(400).json({message: 'Emails do not match'});
+  // } else if (req.body.password !== req.body.repeat_password) {
+  //   return res.status(400).json({message: 'Passwords do not match'});
   }
 
   var user = new User();
 
   user.username = req.body.username;
-
-  user.setPassword(req.body.password)
+  user.setPassword(req.body.password);
+  user.generateUserToken();
 
   user.save(function (err){
-    if(err){ return next(err); }
+    if (err) { logger.error('USER SAVE ERROR:',err); return next(err); }
+
+    return res.json({token: user.generateJWT()})
+  });
+};
+
+exports.processUserRegistration = function(req, res, next){
+  if(!req.body.username || !req.body.password){
+    return res.status(400).json({message: 'Please fill out all fields'});
+  // } else if (req.body.username !== req.body.repeat_username) {
+  //   return res.status(400).json({message: 'Emails do not match'});
+  // } else if (req.body.password !== req.body.repeat_password) {
+  //   return res.status(400).json({message: 'Passwords do not match'});
+  }
+
+  var user = new User();
+
+  user.username = req.body.username;
+  user.setPassword(req.body.password);
+  user.generateUserToken();
+
+  user.save(function (err){
+    if (err) { logger.error('USER SAVE ERROR:',err); return next(err); }
 
     return res.json({token: user.generateJWT()})
   });
